@@ -9,16 +9,60 @@
     <link href='Content/bootstrap-theme.css' rel='stylesheet' />
     <link href='Content/bootstrap-theme.min.css' rel='stylesheet' />
     <link href='Content/fullcalendar.print.css' rel='stylesheet' media='print' />
+    <link href='Content/bootstrap-datetimepicker.min.css' rel='stylesheet' />
+    <script src='Scripts/lib/jquery.min.js'></script>
     <script src='Scripts/bootstrap.js'></script>
     <script src='Scripts/bootstrap.min.js'></script>
-    <script src='Scripts/npm.js'></script>
+    
     <script src='Scripts/lib/moment.min.js'></script>
-    <script src='Scripts/lib/jquery.min.js'></script>
     <script src='Scripts/fullcalendar.min.js'></script>
+    <script src="Scripts/bootstrap-datetimepicker.min.js"></script>
     <script>
 
-	$(document).ready(function() {
+        function AddEvent()
+        {
+            var services = "";
+            $("input[name='services']").each(function (index,item) {
 
+                if (item.checked == true)
+                {
+                    services += item.value+",";
+                }
+            });
+ 
+            var sitter = $("#sitter").val();
+            var timeStart = $("#datetimepickerstart").val();
+            var timeEnd = $("#datetimepickerend").val();
+            var eventData = {
+                title: sitter + "-" + timeStart,
+                start: timeStart,
+                end: timeEnd
+            };
+
+            $('#calendar').fullCalendar('renderEvent', eventData, true);
+            $('#divMail').modal('hide');
+        }
+
+        var StartDate = new Date();
+        $(document).ready(function () {
+
+
+
+
+            $('#datetimepickerstart').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii',
+                startView: 1,
+                autoclose: 1,
+                showMeridian: true
+            });
+
+            $('#datetimepickerend').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii',
+                startView: 1,
+                autoclose: 1,
+                showMeridian: true
+            });
+            
 		$('#calendar').fullCalendar({
 			header: {
 				left: 'prev,next today',
@@ -28,7 +72,21 @@
 			defaultDate: '2016-05-12',
 			selectable: true,
 			selectHelper: true,
-			select: function(start, end) {
+			select: function (start, end) {
+
+			    $('#datetimepickerstart').val("");
+			    $('#datetimepickerend').val("");
+			    $("#sitter").val("");
+			    $("input[name='services']").removeAttr("checked");
+
+			    $('#divMail').modal('show');
+
+			    StartDate = start._d;
+
+			    $('#datetimepickerstart').val((StartDate.getFullYear() + "-" + (StartDate.getMonth() + 1) + "-" + StartDate.getDate()));
+			    $('#datetimepickerend').val((StartDate.getFullYear() + "-" + (StartDate.getMonth() + 1) + "-" + StartDate.getDate()));
+
+                /*
 				var title = prompt('Event Title:');
 				var eventData;
 				if (title) {
@@ -40,19 +98,11 @@
 					$('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
 				}
 				$('#calendar').fullCalendar('unselect');
+                */
 			},
 			editable: true,
 			eventLimit: true, // allow "more" link when too many events
 			events: [
-				{
-					title: 'All Day Event',
-					start: '2016-05-01'
-				},
-				{
-					title: 'Long Event',
-					start: '2016-05-07',
-					end: '2016-05-10'
-				},
 				{
 					id: 999,
 					title: 'Repeating Event',
@@ -63,35 +113,11 @@
 					title: 'Repeating Event',
 					start: '2016-05-16T16:00:00'
 				},
-				{
-					title: 'Conference',
-					start: '2016-05-11',
-					end: '2016-05-13'
-				},
+				
 				{
 					title: 'Meeting',
 					start: '2016-05-12T10:30:00',
 					end: '2016-05-12T12:30:00'
-				},
-				{
-					title: 'Lunch',
-					start: '2016-05-12T12:00:00'
-				},
-				{
-					title: 'Meeting',
-					start: '2016-05-12T14:30:00'
-				},
-				{
-					title: 'Happy Hour',
-					start: '2016-05-12T17:30:00'
-				},
-				{
-					title: 'Dinner',
-					start: '2016-05-12T20:00:00'
-				},
-				{
-					title: 'Birthday Party',
-					start: '2016-05-13T07:00:00'
 				},
 				{
 					title: 'Click for Google',
@@ -108,7 +134,8 @@
 <body>
 
     <div id='calendar'></div>
-    <div class="" tabindex="-1" role="dialog" aria-labelledby="divMail" aria-hidden="false">
+
+    <div  id="divMail" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="divMail" aria-hidden="false">
         <div class="modal-dialog margin-left-33">
             <div class="modal-content">
                 <div class="modal-header">
@@ -120,30 +147,36 @@
                 <div class="modal-body padding-10">
                     <table>
                         <tr>
-                            <td>Time :</td>
+                            <td>Time Start:</td>
                             <td>
-                                <input type="text" class="inputBox_normal" />
+                                <input type="text" class="inputBox_normal"  id="datetimepickerstart" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Time End:</td>
+                            <td>
+                                <input type="text" class="inputBox_normal" id="datetimepickerend" />
                             </td>
                         </tr>
                         <tr>
                             <td>Sitter :</td>
                             <td>
-                                <input type="text" class="inputBox_normal" />
+                                <input type="text" class="inputBox_normal" id="sitter" />
                             </td>
                         </tr>
                         <tr>
                             <td>Services :</td>
                             <td>
-                                <input type="checkbox" value="" />Day Walker <br />
-                                <input type="checkbox" value="" />Shower<br />
-                                <input type="checkbox" value="" />Hair Cutting<br />
-                                <input type="checkbox" value="" />Day Care
+                                <input type="checkbox" name="services" value="Day Walker" />Day Walker <br />
+                                <input type="checkbox" name="services" value="Shower" />Shower<br />
+                                <input type="checkbox" name="services" value="Hair Cutting" />Hair Cutting<br />
+                                <input type="checkbox" name="services" value="Day Care" />Day Care
                             </td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
                             <td>
-                                <input type="button" class="btn" value="Save" />
+                                <input type="button" class="btn" value="Save" onclick="AddEvent();" />
                                 <input type="button" value="Cancel" />
                                 <input type="button" value="Delet" /><br />
                             </td>
