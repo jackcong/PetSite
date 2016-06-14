@@ -19,6 +19,23 @@
     <script src="Scripts/bootstrap-datetimepicker.min.js"></script>
     <script>
 
+
+        Date.prototype.Format = function (fmt) { //author: meizz 
+            var o = {
+                "M+": this.getMonth() + 1, //月份 
+                "d+": this.getDate(), //日 
+                "h+": this.getHours(), //小时 
+                "m+": this.getMinutes(), //分 
+                "s+": this.getSeconds(), //秒 
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+                "S": this.getMilliseconds() //毫秒 
+            };
+            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        }
+
         function AddEvent()
         {
             var services = "";
@@ -31,23 +48,26 @@
             });
  
             var sitter = $("#sitter").val();
-            var timeStart = $("#datetimepickerstart").val();
-            var timeEnd = $("#datetimepickerend").val();
+            var timeStart = $("#datetimepickerstart").val().replace(' ','T');
+            var timeEnd = $("#datetimepickerend").val().replace(' ', 'T');
+
             var eventData = {
                 title: sitter + "-" + timeStart,
                 start: timeStart,
-                end: timeEnd
+                end: timeEnd,
+                userdata:'abc'
             };
 
             $('#calendar').fullCalendar('renderEvent', eventData, true);
             $('#divMail').modal('hide');
         }
 
+        var calendarDate = new Date();
+        var calendarDateString = calendarDate.Format("yyyy-MM-dd");
+       
         var StartDate = new Date();
+
         $(document).ready(function () {
-
-
-
 
             $('#datetimepickerstart').datetimepicker({
                 format: 'yyyy-mm-dd hh:ii',
@@ -69,7 +89,7 @@
 				center: 'title',
 				right: 'month,agendaWeek,agendaDay'
 			},
-			defaultDate: '2016-05-12',
+			defaultDate: calendarDateString,
 			selectable: true,
 			selectHelper: true,
 			select: function (start, end) {
@@ -100,29 +120,33 @@
 				$('#calendar').fullCalendar('unselect');
                 */
 			},
+			eventClick: function(calEvent, jsEvent, view) {
+
+			    //alert('Event: ' + calEvent.title);
+			    //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+			    //alert('View: ' + view.name);
+
+			    //// change the border color just for fun
+			    //$(this).css('border-color', 'red');
+
+			},
 			editable: true,
 			eventLimit: true, // allow "more" link when too many events
 			events: [
 				{
 					id: 999,
 					title: 'Repeating Event',
-					start: '2016-05-09T16:00:00'
-				},
-				{
-					id: 999,
-					title: 'Repeating Event',
-					start: '2016-05-16T16:00:00'
-				},
-				
+					start: '2016-06-14T16:00:00',
+				},				
 				{
 					title: 'Meeting',
-					start: '2016-05-12T10:30:00',
-					end: '2016-05-12T12:30:00'
+					start: '2016-06-14T10:30:00',
+					end: '2016-06-14T12:30:00'
 				},
 				{
 					title: 'Click for Google',
 					url: 'http://google.com/',
-					start: '2016-05-28'
+					start: '2016-06-14'
 				}
 			]
 		});
