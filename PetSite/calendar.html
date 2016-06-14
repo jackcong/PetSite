@@ -156,57 +156,70 @@
     </script>
 </head>
 <body>
-
-    <div id='calendar'></div>
+    <div class="header">
+        <div class="logo"></div>
+        <div class="img_3dogs"></div>
+    </div>
+    <div id='calendar' style="margin-top:50px;"></div>
 
     <div  id="divMail" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="divMail" aria-hidden="false">
-        <div class="modal-dialog margin-left-33">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <div class="">
+                    <div>
                         <button type="button" class="close float-right nostyle" data-dismiss="modal" aria-hidden="true">×</button>
                         <span class="">Make An Appointment</span>
                     </div>
                 </div>
-                <div class="modal-body padding-10">
-                    <table>
-                        <tr>
-                            <td>Time Start:</td>
-                            <td>
-                                <input type="text" class="inputBox_normal"  id="datetimepickerstart" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Time End:</td>
-                            <td>
-                                <input type="text" class="inputBox_normal" id="datetimepickerend" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Sitter :</td>
-                            <td>
-                                <input type="text" class="inputBox_normal" id="sitter" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Services :</td>
-                            <td>
-                                <input type="checkbox" name="services" value="Day Walker" />Day Walker <br />
-                                <input type="checkbox" name="services" value="Shower" />Shower<br />
-                                <input type="checkbox" name="services" value="Hair Cutting" />Hair Cutting<br />
-                                <input type="checkbox" name="services" value="Day Care" />Day Care
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td>
-                                <input type="button" class="btn" value="Save" onclick="AddEvent();" />
-                                <input type="button" value="Cancel" />
-                                <input type="button" value="Delet" /><br />
-                            </td>
-                        </tr>
-                    </table>
-
+                <div class="div_stepOfApp">
+                    Booking
+                </div>
+                <div class="modal-body">
+                    <div class="padding-10">
+                        <table cellpadding="2" cellspacing="2" class="book_appointment">
+                            <tr>
+                                <td class="title01">Time From:</td>
+                                <td>
+                                    <input type="text" class="inputBox_normal" id="datetimepickerstart" />
+                                </td>
+                                <td class="title01">To:</td>
+                                <td>
+                                    <input type="text" class="inputBox_normal" id="datetimepickerend" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="title01">Services :</td>
+                                <td>
+                                    <input type="checkbox" class="cbx" name="services" value="Day Walker" />Day Walker <br />
+                                    <input type="checkbox" class="cbx" name="services" value="Shower" />Shower<br />
+                                    <input type="checkbox" class="cbx" name="services" value="Hair Cutting" />Hair Cutting<br />
+                                    <input type="checkbox" class="cbx" name="services" value="Day Care" />Day Care
+                                </td>
+                                <td colspan="2">
+                                    <input type="checkbox" class="cbx" name="services" value="Day Walker" />Day Walker <br />
+                                    <input type="checkbox" class="cbx" name="services" value="Shower" />Shower<br />
+                                    <input type="checkbox" class="cbx" name="services" value="Hair Cutting" />Hair Cutting<br />
+                                    <input type="checkbox" class="cbx" name="services" value="Day Care" />Day Care
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="title01">Sitter :</td>
+                                <td colspan="3">
+                                    <input type="text" class="inputBox_normal" id="sitter" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td colspan="3">
+                                    <br />
+                                    <br />
+                                    <input type="button" class="btn btn-m width-30" value="Save" onclick="AddEvent();" />
+                                    <input type="button" class="btn btn-m width-30" value="Cancel" />
+                                    <input type="button" class="btn btn-m width-30" value="Delet" /><br />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
                 <div class="modal-footer">
                 </div>
