@@ -36,6 +36,17 @@
             return fmt;
         }
 
+        function hideShow()
+        {
+            $('#divMail').modal('hide');
+        }
+
+        function deleteSheet()
+        {
+            $('#calendar').fullCalendar('removeEvents', event_id);
+            $('#divMail').modal('hide');
+        }
+
         function AddEvent()
         {
             var services = "";
@@ -52,10 +63,12 @@
             var timeEnd = $("#datetimepickerend").val().replace(' ', 'T');
 
             var eventData = {
+                id: ("" + (Math.random() * 100000000000) + "s"),
                 title: sitter + "-" + timeStart,
                 start: timeStart,
                 end: timeEnd,
-                userdata:'abc'
+                services: services,
+                sitter:sitter
             };
 
             $('#calendar').fullCalendar('renderEvent', eventData, true);
@@ -66,6 +79,7 @@
         var calendarDateString = calendarDate.Format("yyyy-MM-dd");
 
         var StartDate = new Date();
+        var event_id = "";
 
         $(document).ready(function () {
 
@@ -121,6 +135,29 @@
                 */
 			},
 			eventClick: function(calEvent, jsEvent, view) {
+
+			    $('#datetimepickerstart').val("");
+			    $('#datetimepickerend').val("");
+			    $("#sitter").val("");
+			    $("input[name='services']").removeAttr("checked");
+
+			    $('#divMail').modal('show');
+
+			    $("#datetimepickerstart").val(calEvent.start._i.replace('T', ' '));
+			    $('#datetimepickerend').val(calEvent.end._i.replace('T', ' '));
+			    event_id = calEvent._id;
+			    if (calEvent.services != "")
+			    {
+			        var arrServ = calEvent.services.split(',');
+
+			        $("input[name='services']").each(function (index, item) {
+			            if (arrServ.indexOf(item.value) != -1) {
+			                item.checked = true;
+			            }
+			        });
+			    }
+
+			    $("#sitter").val(calEvent.sitter);
 
 			    //alert('Event: ' + calEvent.title);
 			    //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
@@ -205,7 +242,11 @@
                             <tr>
                                 <td class="title01">Sitter :</td>
                                 <td colspan="3">
-                                    <input type="text" class="inputBox_normal" id="sitter" />
+                                    <select id="sitter" >
+                                        <option value="">--Select--</option>
+                                        <option value="Ivy">Ivy</option>
+                                        <option value="Peter">Peter</option>
+                                    </select>
                                 </td>
                             </tr>
                             <tr>
@@ -214,8 +255,8 @@
                                     <br />
                                     <br />
                                     <input type="button" class="btn btn-m width-30" value="Save" onclick="AddEvent();" />
-                                    <input type="button" class="btn btn-m width-30" value="Cancel" />
-                                    <input type="button" class="btn btn-m width-30" value="Delet" /><br />
+                                    <input type="button" class="btn btn-m width-30" value="Cancel" onclick="hideShow();" />
+                                    <input type="button" class="btn btn-m width-30" value="Delet" onclick="deleteSheet();" /><br />
                                 </td>
                             </tr>
                         </table>
